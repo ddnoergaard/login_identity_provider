@@ -1,0 +1,11 @@
+:root {
+    --text: #ebefee;
+    --bg: #4a413c;
+    --light-b: #ccb499;
+    --mid-b: #c8906d;
+    --dark-b: #bb6c43;
+}
+
+* {
+    color: var(--text);
+}
