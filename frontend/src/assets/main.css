@@ -1,6 +1,17 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: .3s;
+}
+
+a:hover {
+    text-decoration-color: var(--text);
 }
 
 body {

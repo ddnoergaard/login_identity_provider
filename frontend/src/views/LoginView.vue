@@ -1,18 +1,29 @@
 <script setup>
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ref } from 'vue';
 
-const emailInput = ref(null);
-const passwordInput = ref(null);
-const errorMsg = ref(null);
-const errorBool = ref(false);
+const emailInput = ref(null)
+const passwordInput = ref(null)
+const missingEmail = ref(false)
+const missingPass = ref(false)
 
 async function Login() {
-    if (emailInput.value === null || passwordInput.value === null) {
-        errorMsg.value = "Invalid email or password"
-        errorBool.value = true;
+    missingEmail.value = false;
+    missingPass.value = false;
+    try {
+        const result = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+        console.log('login succesful: ', result)
     }
-    console.log(emailInput.value)
-    console.log(passwordInput.value)
+    catch (error) {
+        console.log(error.message)
+        if (error.message === 'Firebase: Error (auth/missing-email).') {
+            missingEmail.value = true;
+        }
+        if (error.message === 'Firebase: Error (auth/missing-password).') {
+            missingPass.value = true;
+        }
+    }
 }
 
 
@@ -26,12 +37,20 @@ async function Login() {
                 <p>Lets get you sorted!</p>
             </div>
             <div id="input-container">
-                <label for=""></label>
-                <input type="email" placeholder="john@doe.com" v-model="emailInput">
-                <input type="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                    v-model="passwordInput">
+                <div class="input-divider">
+                    <input :class="{ 'missing-input': missingEmail }" type="email" name="emailI"
+                        placeholder="john@doe.com" v-model="emailInput">
+                </div>
+                <div class="input-divider">
+                    <input :class="{ 'missing-input': missingPass }" type="password" name="passwordI"
+                        placeholder="Super secret password" v-model="passwordInput">
+                </div>
             </div>
-            <button @click="Login">Login</button>
+            <div id="cta-container">
+                <button @click="Login">Login</button>
+                <RouterLink :to="{ name: 'sign-up' }">Not a member?</RouterLink>
+            </div>
+
         </div>
     </div>
 </template>
@@ -43,6 +62,10 @@ async function Login() {
     display: flex;
     place-items: center;
     justify-content: center;
+}
+
+.error-msg {
+    color: red;
 }
 
 #login-card {
@@ -67,13 +90,13 @@ async function Login() {
 #input-container {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
     place-items: center;
 }
 
 input {
     height: 1.5rem;
-    width: 75%;
+    width: 100%;
     padding: 1rem;
     border: 1px solid transparent;
     border-radius: 0.5rem;
@@ -82,7 +105,12 @@ input {
 }
 
 input:focus {
-    border-color: pink;
+    border-color: white;
+}
+
+.missing-input {
+    border-width: 2px;
+    border-color: red;
 }
 
 button {
@@ -101,6 +129,24 @@ button:hover {
     color: var(--bg);
 }
 
+.input-divider {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.input-divider>input {
+    place-self: center;
+}
+
+#cta-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 @media (width < 1250px) {
     #login-card {
         width: 100dvw;
@@ -109,5 +155,8 @@ button:hover {
         border-radius: 0;
     }
 
+    input {
+        width: 75%;
+    }
 }
 </style>
