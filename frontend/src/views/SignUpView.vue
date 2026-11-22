@@ -11,18 +11,23 @@ const missingEmail = ref(false)
 const passwordMatch = computed(() => (passwordInput.value != '' && passwordInput.value === passwordValidateInput.value))
 
 async function SignUp() {
+    const result = ref(null);
+
     if (!passwordMatch.value) {
         console.log(passwordMatch)
         return
     }
 
     try {
-        const result = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+        result.value = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
         console.log('signup succesful: ', result)
     }
     catch (error) {
         console.log(error)
     }
+
+
+
 
 
 }
