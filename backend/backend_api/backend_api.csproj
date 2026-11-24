@@ -10,11 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Services\Interfaces\" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.2" />
   </ItemGroup>
 
 </Project>

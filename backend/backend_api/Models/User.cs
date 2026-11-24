@@ -3,7 +3,7 @@
     public class User
     {
         public int Id { get; set; }
-        public int FirebaseUid { get; set; }
+        public string FirebaseUid { get; set; }
         public string? DisplayName { get; set; }
         public DateTime CreatedAt { get; set; }
 
